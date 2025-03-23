@@ -41,7 +41,7 @@ namespace Curriculum.Repositorys
             updateCourse.CourseNameTH = course.CourseNameTH;
             updateCourse.CourseNameEN = course.CourseNameEN;
             updateCourse.Credit = course.Credit;
-            updateCourse.SubjectCategory = course.SubjectCategory;
+            updateCourse.SubjectGroup = course.SubjectGroup;
 
             _context.SaveChanges();
         }

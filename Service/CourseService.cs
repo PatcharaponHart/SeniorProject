@@ -7,9 +7,9 @@ namespace Curriculum.Service
     {
         private readonly ICourseRepository _courseRepository;
 
-        public CourseService(ICourseRepository agentRepository)
+        public CourseService(ICourseRepository courseRepository)
         {
-            _courseRepository = agentRepository;
+            _courseRepository = courseRepository;
         }
 
         public List<Courses> GetCourseList()

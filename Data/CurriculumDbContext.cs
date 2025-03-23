@@ -15,5 +15,12 @@ namespace YourNamespace.Data // ตรวจสอบให้ตรงกับ
         // ตัวอย่าง DbSet
         public DbSet<Students> tblStudents { get; set; }
         public DbSet<Courses> tblCourses { get; set; }
+        public DbSet<Grades> tblGrades { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Grades>()
+                .HasKey(g => new { g.StudentID, g.CourseCode }); // 🔥 Composite Primary Key
+        }
     }
 }

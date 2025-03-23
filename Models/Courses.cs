@@ -10,6 +10,6 @@ namespace Curriculum.Models
         public string CourseNameTH { get; set; } = string.Empty;
         public string CourseNameEN { get; set; } = string.Empty;
         public string Credit { get; set; } = string.Empty;
-        public string SubjectCategory { get; set; } = string.Empty;
+        public string SubjectGroup { get; set; } = string.Empty;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Curriculum.Models;
 using Curriculum.Repositorys;
+using System.Collections.Generic;
 
 namespace Curriculum.Service
 {
@@ -12,6 +13,10 @@ namespace Curriculum.Service
             _gradeRepository = gradeRepository;
         }
 
+        public async Task<IEnumerable<StudentGradeCourseDto>> GetStudentGradesWithCourseDetailsAsync()
+        {
+            return await _gradeRepository.GetStudentGradesWithCourseDetailsAsync();
+        }
         public List<Grades> GetGradeList()
         {
             var result = _gradeRepository.GetGradeList();
@@ -21,6 +26,10 @@ namespace Curriculum.Service
         {
             _gradeRepository.PushGrade(grade);
         }
+        public void PushGrades(List<Grades> grades)
+        {
+            _gradeRepository.PushMultipleGrades(grades);
+        }
 
         //public void DeleteGrade(string CourseCode)
         //{
@@ -29,6 +38,14 @@ namespace Curriculum.Service
         public void UpdateGrade(Grades grade)
         {
             _gradeRepository.UpdateGrade(grade);
+        }
+        public void UpdateGradeByStudent(Grades grade)
+        {
+            _gradeRepository.UpdateGradeByStudent(grade);
+        }
+        public void UpdateGrades(List<Grades> gradesList)
+        {
+            _gradeRepository.UpdateGrades(gradesList);
         }
         public List<Grades> SearchGrades(string search)
         {

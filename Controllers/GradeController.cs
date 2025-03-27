@@ -11,17 +11,23 @@ namespace Curriculum.Controllers
     {
         private readonly CurriculumDbContext _context;
 
-        private readonly IGradeService _gredeService;
+        private readonly IGradeService _gradeService;
 
-        public GradeController(CurriculumDbContext context, IGradeService gredeService)
+        public GradeController(CurriculumDbContext context, IGradeService gradeService)
         {
             _context = context;
-            _gredeService = gredeService;
+            _gradeService = gradeService;
+        }
+        [HttpGet("grades-with-courses")]
+        public async Task<ActionResult<IEnumerable<StudentGradeCourseDto>>> GetStudentGradesWithCourses()
+        {
+            var result = await _gradeService.GetStudentGradesWithCourseDetailsAsync();
+            return Ok(result);
         }
         [HttpGet("GetGradeList")]
         public ActionResult GetGradeList()
         {
-            var result = _gredeService.GetGradeList();
+            var result = _gradeService.GetGradeList();
             return Ok(result);
         }
         [HttpGet]
@@ -41,17 +47,38 @@ namespace Curriculum.Controllers
             {
                 return BadRequest("Invalid Grade data");
             }
-            _gredeService.PushGrade(grade);
+            _gradeService.PushGrade(grade);
+            return Ok("Grade added Successfully");
+        }
+        [HttpPost("PushGrades")]
+        public IActionResult PushGrades(List<Grades> grades)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid Grade data");
+            }
+            _gradeService.PushGrades(grades);
             return Ok("Grade added Successfully");
         }
 
         [HttpPut("UpdateGrade")]
         public ActionResult UpdateGrade(Grades grade)
         {
-            _gredeService.UpdateGrade(grade);
+            _gradeService.UpdateGrade(grade);
             return Ok("Grade Update Successfully");
         }
-
+        [HttpPut("UpdateEdit")]
+        public IActionResult EditGrade(Grades grade)
+        {
+            _gradeService.UpdateGradeByStudent(grade);
+            return Ok("Grade Update Successfully");
+        }
+        [HttpPut("UpdateGrades")]
+        public IActionResult UpdateGrades(List<Grades> gradesList)
+        {
+            _gradeService.UpdateGrades(gradesList);
+            return Ok("Grade Update Successfully");
+        }
         //[HttpDelete("DeleteGrade")]
         //public ActionResult DeleteGrade(string courseCode)
         //{

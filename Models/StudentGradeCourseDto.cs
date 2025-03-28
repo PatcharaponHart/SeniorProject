@@ -9,7 +9,6 @@
         public string CourseNameTH { get; set; }
         public string CourseNameEN { get; set; }
         public string Grade { get; set; }
-        public int Academic_year { get; set; }
-        public int Semester { get; set; }
+        public int Credit { get; set;}
     }
 }

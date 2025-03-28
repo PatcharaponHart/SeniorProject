@@ -9,7 +9,7 @@ namespace Curriculum.Models
         public string Grade {  get; set; } 
         //public int Academic_year { get; set; }
         //public int Semester {  get; set; }
-        public string Credit {  get; set; }
+        public int Credit {  get; set; }
 
     }
 }

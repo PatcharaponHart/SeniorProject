@@ -4,6 +4,7 @@ namespace Curriculum.Service
 {
     public interface IGradeService
     {
+        Task<StudentGradesSummaryDto> GetStudentGradesByStudentId(string studentId);
         Task<IEnumerable<StudentGradeCourseDto>> GetStudentGradesWithCourseDetailsAsync();
         List<Grades> GetGradeList();
         void PushGrade(Grades grade);

@@ -18,6 +18,15 @@ namespace Curriculum.Controllers
             _context = context;
             _gradeService = gradeService;
         }
+        [HttpGet("GetGradeByStudentId")]
+        public async Task<IActionResult> GetStudentGradesByStudentId(string studentId)
+        {
+            var result = await _gradeService.GetStudentGradesByStudentId(studentId);
+
+            // ส่งคืนผลลัพธ์ในรูปแบบของ Ok ที่สามารถใช้งานใน API
+            return Ok(result);
+        }
+
         [HttpGet("grades-with-courses")]
         public async Task<ActionResult<IEnumerable<StudentGradeCourseDto>>> GetStudentGradesWithCourses()
         {

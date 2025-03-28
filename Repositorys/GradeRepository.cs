@@ -38,6 +38,41 @@ namespace Curriculum.Repositorys
 
             return result;
         }
+        public async Task<StudentGradesSummaryDto> GetStudentGradesByStudentId(string studentId)
+        {
+            var result = await _context.tblStudents
+                .Where(s => s.StudentID == studentId)
+                .Join(_context.tblGrades,
+                    student => student.StudentID,
+                    grade => grade.StudentID,
+                    (student, grade) => new { Student = student, Grade = grade })
+                .Join(_context.tblCourses,
+                    sg => sg.Grade.CourseCode,
+                    course => course.CourseCode,
+                    (sg, course) => new StudentGradeCourseDto
+                    {
+                        StudentID = sg.Student.StudentID,
+                        FirstName = sg.Student.FirstName,
+                        LastName = sg.Student.LastName,
+                        CourseCode = course.CourseCode,
+                        CourseNameTH = course.CourseNameTH,
+                        CourseNameEN = course.CourseNameEN,
+                        Grade = sg.Grade.Grade,
+                        Credit = course.Credit // Assuming you have a Credits property in the Course table
+                    })
+                .ToListAsync();
+
+            return new StudentGradesSummaryDto
+            {
+                StudentID = studentId,
+                FirstName = result.FirstOrDefault()?.FirstName,
+                LastName = result.FirstOrDefault()?.LastName,
+                Grades = result,
+                TotalCredits = result.Sum(r => r.Credit)
+            };
+        }
+
+
         public List<Grades> GetGradeList()
         {
 
@@ -51,7 +86,7 @@ namespace Curriculum.Repositorys
             _context.tblGrades.Add(grade);
             _context.SaveChanges();
         }
-        public void PushGrade(string studentId, string courseCode, string grade, string credit)
+        public void PushGrade(string studentId, string courseCode, string grade, int credit)
         {
             var newGrade = new Grades
             {
@@ -59,19 +94,10 @@ namespace Curriculum.Repositorys
                 CourseCode = courseCode,
                 Grade = grade,
                 Credit = credit,
-                //Academic_year = DateTime.Now.Year, // หากต้องการใช้ปีปัจจุบัน
-                //Semester = DetermineSemester() // Method กำหนดเทอม
             };
 
             _context.tblGrades.Add(newGrade);
             _context.SaveChanges();
-        }
-
-        // Method เสริมเพื่อกำหนดเทอมอัตโนมัติ
-        private int DetermineSemester()
-        {
-            int month = DateTime.Now.Month;
-            return (month >= 8 && month <= 12) ? 1 : 2;
         }
 
         // Method สำหรับ Bulk Insert หลายเกรด

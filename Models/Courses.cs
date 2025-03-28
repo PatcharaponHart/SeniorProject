@@ -9,7 +9,7 @@ namespace Curriculum.Models
         public string CourseCode { get; set; } = string.Empty;
         public string CourseNameTH { get; set; } = string.Empty;
         public string CourseNameEN { get; set; } = string.Empty;
-        public string Credit { get; set; } = string.Empty;
+        public int Credit { get; set; }
         public string SubjectGroup { get; set; } = string.Empty;
     }
 }

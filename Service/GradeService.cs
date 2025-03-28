@@ -12,7 +12,10 @@ namespace Curriculum.Service
         {
             _gradeRepository = gradeRepository;
         }
-
+        public async Task<StudentGradesSummaryDto> GetStudentGradesByStudentId(string studentId)
+        {
+            return await _gradeRepository.GetStudentGradesByStudentId(studentId);
+        }
         public async Task<IEnumerable<StudentGradeCourseDto>> GetStudentGradesWithCourseDetailsAsync()
         {
             return await _gradeRepository.GetStudentGradesWithCourseDetailsAsync();

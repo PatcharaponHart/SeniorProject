@@ -38,39 +38,31 @@ namespace Curriculum.Controllers
         }
 
         [HttpPost("PushStudent")]
-        public IActionResult PushStudent([FromBody] Students student)
+        public IActionResult PushStudent([FromBody]Students student) 
         {
             if (!ModelState.IsValid)
             {
-                // รวม Error Messages จาก ModelState (ถ้าต้องการแสดงรายละเอียดมากขึ้น)
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                return BadRequest(new { message = "Invalid Student data", errors = errors });
-                // หรือ return BadRequest("Invalid Student data"); แบบเดิมก็ได้
+                return BadRequest("Invalid Student data");
             }
-
-            try
-            {
-                _studentService.PushStudent(student);
-                return Ok("Student added Successfully");
-            }
-            catch (InvalidOperationException ex) // ดักจับ Exception ที่โยนมาจาก Service
-            {
-                // ถ้าเป็น Exception เกี่ยวกับข้อมูลซ้ำ ให้ส่ง 409 Conflict หรือ 400 Bad Request กลับไป
-                // Status 409 Conflict เหมาะสมกว่าสำหรับการแจ้งว่าข้อมูลขัดแย้งกับที่มีอยู่แล้ว
-                return Conflict(new { message = ex.Message }); // ส่ง Message จาก Exception กลับไป
-                                                               // หรือจะส่งเป็น BadRequest ก็ได้:
-                                                               // return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex) // ดักจับ Error อื่นๆ ที่อาจเกิดขึ้น
-            {
-                System.Diagnostics.Debug.WriteLine($"!!! UNEXPECTED ERROR in PushStudent: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-
-                // Log error จริงๆ ไว้ด้วย
-                // Log.Error(ex, "Error pushing student");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred." });
-            }
+            _studentService.PushStudent(student);
+            return Ok("Student added Successfully");
         }
+        //[HttpPut]
+        //public async Task<ActionResult<List<Students>>> UpdateStudent(Students updateStudent)
+        //{
+        //    var dbStudent = await _context.tblStudents.FindAsync(updateStudent.StudentID);
+        //    if (dbStudent is null)
+        //        return NotFound("Student not found.");
+
+        //    dbStudent.FirstName = updateStudent.FirstName;
+        //    dbStudent.LastName = updateStudent.LastName;
+        //    dbStudent.Username = updateStudent.Username;
+        //    dbStudent.Password = updateStudent.Password;
+
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok(await _context.tblStudents.ToListAsync());
+        //}
 
         [HttpPut("UpdateStudent")]
         public ActionResult UpdateStudent(Students student)

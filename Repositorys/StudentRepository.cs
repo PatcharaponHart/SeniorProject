@@ -22,9 +22,15 @@ namespace Curriculum.Repositorys
         }
         public void PushStudent(Students student)
         {
+            if (_context.tblStudents.Any(s => s.StudentID == student.StudentID || s.Username == student.Username))
+            {
+                throw new InvalidOperationException("StudentID หรือ Username ถูกใช้แล้ว");
+            }
+
             _context.tblStudents.Add(student);
             _context.SaveChanges();
         }
+
         public void UpdateStudent(Students student)
         {
             var updateStudent = _context.tblStudents.Find(student.StudentID);

@@ -120,28 +120,30 @@ namespace Curriculum.Repositorys
         }
         public void UpdateGradeByStudent(Grades grade)
         {
-            // ค้นหาเกรดที่ต้องการอัพเดทด้วย StudentID และ CourseCode
+            if (grade == null)
+            {
+                throw new ArgumentNullException(nameof(grade), "ข้อมูลที่รับเข้ามาเป็น null");
+            }
+
+            // ค้นหาเกรดที่ต้องการอัพเดท
             var existingGrade = _context.tblGrades
                 .FirstOrDefault(g =>
                     g.StudentID == grade.StudentID &&
                     g.CourseCode == grade.CourseCode);
 
-            // ถ้าพบข้อมูล
             if (existingGrade != null)
             {
-                // อัพเดทฟิลด์ที่ต้องการ
                 existingGrade.Grade = grade.Grade;
                 existingGrade.Credit = grade.Credit;
-                // อาจเพิ่มฟิลด์อื่นๆ ตามต้องการ
 
                 _context.SaveChanges();
             }
             else
             {
-                // หากไม่พบข้อมูล อาจโยน Exception หรือจัดการตามเหมาะสม
-                throw new Exception("ไม่พบข้อมูลเกรดที่ต้องการแก้ไข");
+                throw new KeyNotFoundException($"ไม่พบข้อมูลเกรดของนักเรียน {grade.StudentID} ในวิชา {grade.CourseCode}");
             }
         }
+
         public void UpdateGrades(List<Grades> gradesList)
         {
             foreach (var grade in gradesList)

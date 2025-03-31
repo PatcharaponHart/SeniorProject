@@ -58,7 +58,8 @@ namespace Curriculum.Repositorys
                         CourseNameTH = course.CourseNameTH,
                         CourseNameEN = course.CourseNameEN,
                         Grade = sg.Grade.Grade,
-                        Credit = course.Credit // Assuming you have a Credits property in the Course table
+                        Credit = course.Credit,
+                        SubjectGroup = course.SubjectGroup // Assuming you have a Credits property in the Course table
                     })
                 .ToListAsync();
 
